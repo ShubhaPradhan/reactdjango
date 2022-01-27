@@ -10,7 +10,7 @@ import { render } from "react-dom";
 import HomePage from "./HomePage";
 import RoomJoinPage from "./RoomJoinPage";
 import CreateRoomPage from "./CreateRoomPage";
-
+import Room from "./Room";
 function App() {
   return (
     <Router>
@@ -18,6 +18,7 @@ function App() {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/join" element={<RoomJoinPage />}></Route>
         <Route path="/create" element={<CreateRoomPage />}></Route>
+        <Route path="/room/:roomCode" element={<Room />}></Route>
       </Routes>
     </Router>
   );

@@ -20,8 +20,8 @@ const Room = () => {
     getRoomDetails();
   }, [roomCode]);
   return (
-    <div>
-      <h3>{roomCode}</h3>
+    <div className="MuiGrid-container">
+      <h1>{roomCode}</h1>
       <p>Votes: {votesToSkip}</p>
       <p>Guest Can Pause: {guestCanPause.toString()}</p>
       <p>Host: {isHost.toString()}</p>

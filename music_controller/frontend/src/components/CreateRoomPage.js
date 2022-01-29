@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
@@ -13,7 +13,7 @@ import { FormControlLabel } from "@material-ui/core";
 
 const CreateRoomPage = () => {
   const defaultVotes = 2;
-
+  let navigate = useNavigate();
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
   const handleVotesToSkip = (e) => {
@@ -35,7 +35,7 @@ const CreateRoomPage = () => {
     };
     fetch("/api/create-room", requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => navigate(`/room/${data.code}`));
   };
   return (
     <Grid container spacing={1}>

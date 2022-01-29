@@ -4,7 +4,6 @@ const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
-
   const componentDidMount = useCallback(async () => {
     try {
       const response = await fetch("/api/user-in-room");
@@ -18,11 +17,11 @@ const AppProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [roomCode]);
+  }, []);
 
   useEffect(() => {
     componentDidMount();
-  }, [roomCode]);
+  }, []);
   return (
     <AppContext.Provider value={{ roomCode }}>{children}</AppContext.Provider>
   );

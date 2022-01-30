@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import { useParams, useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context";
+
 import CreateRoomPage from "./CreateRoomPage";
 
 const Room = () => {
   let navigate = useNavigate();
   const defaultVotes = 2;
   const { roomCode } = useParams();
+  const { setRoomCode } = useGlobalContext();
+
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
   const [isHost, setisHost] = useState(false);
@@ -15,7 +19,13 @@ const Room = () => {
   React.useEffect(() => {
     const getRoomDetails = () => {
       fetch(`/api/get-room?code=${roomCode}`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            setRoomCode(null);
+            navigate("/");
+          }
+          return response.json();
+        })
         .then((data) => {
           setVotesToSkip(data.votes_to_skip),
             setGuestCanPause(data.guest_can_pause),
@@ -23,16 +33,14 @@ const Room = () => {
         });
     };
     getRoomDetails();
-  }, [roomCode]);
+  }, []);
 
   const handleLeave = (e) => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
-    fetch("/api/leave-room", requestOptions).then((response) => {
-      navigate("/");
-    });
+    fetch("/api/leave-room", requestOptions).then((response) => navigate("/"));
   };
 
   const renderSettings = () => {
@@ -46,15 +54,15 @@ const Room = () => {
             roomCode={roomCode}
           />
         </Grid>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => setShowSetting(false)}
-          className="closeSettings"
-        >
-          Close
-        </Button>
+        <Grid item xs={12} align="center">
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={() => setShowSetting(false)}
+          >
+            Close
+          </Button>
+        </Grid>
       </Grid>
     );
   };

@@ -1,21 +1,26 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
-import { Typography } from "@material-ui/core";
-import { TextField } from "@material-ui/core";
-import { FormHelperText } from "@material-ui/core";
-import { FormControl } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { Radio } from "@material-ui/core";
-import { RadioGroup } from "@material-ui/core";
-import { FormControlLabel } from "@material-ui/core";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Button,
+  Grid,
+  Typography,
+  TextField,
+  FormHelperText,
+  FormControl,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Collapse,
+} from "@material-ui/core";
 
-const CreateRoomPage = () => {
+const CreateRoomPage = ({ update, roomCode }) => {
   const defaultVotes = 2;
   let navigate = useNavigate();
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
+  const [successMsg, setSuccessMsg] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
+
   const handleVotesToSkip = (e) => {
     setVotesToSkip(e.target.value);
   };
@@ -24,7 +29,7 @@ const CreateRoomPage = () => {
     setGuestCanPause(e.target.value === "true" ? true : false);
   };
 
-  const handleSubmit = (e) => {
+  const handleCreate = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -37,11 +42,34 @@ const CreateRoomPage = () => {
       .then((response) => response.json())
       .then((data) => navigate(`/room/${data.code}`));
   };
+
+  const handleUpdate = () => {
+    const requestOptions = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        votes_to_skip: votesToSkip,
+        guest_can_pause: guestCanPause,
+        code: roomCode,
+      }),
+    };
+    fetch("/api/update-room", requestOptions).then((response) => {
+      if (response.ok) {
+        setSuccessMsg(true);
+      } else {
+        setErrorMsg(true);
+      }
+    });
+  };
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} align="center">
+        <Collapse in={successMsg}>Room updated successfully</Collapse>
+        <Collapse in={errorMsg}>Error in updating settings</Collapse>
+      </Grid>
+      <Grid item xs={12} align="center">
         <Typography component="h4" variant="h4">
-          Create A Room
+          {update ? "Update Room" : "Create A Room"}
         </Typography>
       </Grid>
       <Grid item xs={12} align="center">
@@ -83,15 +111,23 @@ const CreateRoomPage = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12} align="center">
-        <Button color="primary" variant="contained" onClick={handleSubmit}>
-          Create Room
-        </Button>
+        {update ? (
+          <Button color="primary" variant="contained" onClick={handleUpdate}>
+            Update Room
+          </Button>
+        ) : (
+          <Button color="primary" variant="contained" onClick={handleCreate}>
+            Create Room
+          </Button>
+        )}
       </Grid>
-      <Grid item xs={12} align="center">
-        <Button color="secondary" variant="contained" to="/" component={Link}>
-          Back
-        </Button>
-      </Grid>
+      {update ? null : (
+        <Grid item xs={12} align="center">
+          <Button color="secondary" variant="contained" to="/" component={Link}>
+            Back
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 };

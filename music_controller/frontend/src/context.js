@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useCallback } from "react";
+
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [roomCode, setRoomCode] = useState("");
+
   const componentDidMount = useCallback(async () => {
     try {
       const response = await fetch("/api/user-in-room");
@@ -23,7 +25,9 @@ const AppProvider = ({ children }) => {
     componentDidMount();
   }, []);
   return (
-    <AppContext.Provider value={{ roomCode }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ roomCode, setRoomCode }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 

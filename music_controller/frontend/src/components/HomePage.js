@@ -2,8 +2,10 @@ import React from "react";
 import { ButtonGroup, Button, Grid, Typography } from "@material-ui/core";
 import { Link, Navigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
+
 const HomePage = () => {
   const { roomCode } = useGlobalContext();
+
   if (roomCode) {
     return <Navigate to={`/room/${roomCode}`} replace />;
   } else {

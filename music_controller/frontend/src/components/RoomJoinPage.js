@@ -1,12 +1,14 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { Link, useNavigate } from "react-router-dom";
 
 const RoomJoinPage = () => {
   const navigate = useNavigate();
+
   const [roomCode, setRoomCode] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
   const handleSubmit = () => {
     const requestOptions = {
       method: "POST",
@@ -26,6 +28,7 @@ const RoomJoinPage = () => {
       }
     });
   };
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>

@@ -4,7 +4,12 @@ import { useCallback } from "react";
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
+  const defaultVotes = 2;
   const [roomCode, setRoomCode] = useState("");
+  const [guestCanPause, setGuestCanPause] = useState(true);
+  const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
+  const [successMsg, setSuccessMsg] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const componentDidMount = useCallback(async () => {
     try {
@@ -25,7 +30,21 @@ const AppProvider = ({ children }) => {
     componentDidMount();
   }, []);
   return (
-    <AppContext.Provider value={{ roomCode, setRoomCode }}>
+    <AppContext.Provider
+      value={{
+        defaultVotes,
+        roomCode,
+        setRoomCode,
+        guestCanPause,
+        setGuestCanPause,
+        votesToSkip,
+        setVotesToSkip,
+        successMsg,
+        setSuccessMsg,
+        errorMsg,
+        setErrorMsg,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

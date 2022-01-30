@@ -7,12 +7,15 @@ import CreateRoomPage from "./CreateRoomPage";
 
 const Room = () => {
   let navigate = useNavigate();
-  const defaultVotes = 2;
   const { roomCode } = useParams();
-  const { setRoomCode } = useGlobalContext();
+  const {
+    setRoomCode,
+    guestCanPause,
+    votesToSkip,
+    setGuestCanPause,
+    setVotesToSkip,
+  } = useGlobalContext();
 
-  const [guestCanPause, setGuestCanPause] = useState(true);
-  const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
   const [isHost, setisHost] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
 
@@ -49,8 +52,8 @@ const Room = () => {
         <Grid item xs={12} align="center">
           <CreateRoomPage
             update={true}
-            votesToSkip={votesToSkip}
-            guestCanPause={guestCanPause}
+            updateVotesToSkip={votesToSkip}
+            updateGuestCanPause={guestCanPause}
             roomCode={roomCode}
           />
         </Grid>

@@ -1,3 +1,5 @@
-CLIENT_ID = "bb947eadca894f31a65eee02f418c01c"
-CLIENT_SECRET = "33c76ccbaf494f40af6e8cb62152332c"
+from decouple import config
+
+CLIENT_ID = config("CLIENT_ID")
+CLIENT_SECRET = config("CLIENT_SECRET")
 REDIRECT_URI = ""

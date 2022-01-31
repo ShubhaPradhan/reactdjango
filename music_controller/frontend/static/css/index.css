@@ -26,6 +26,22 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.messages {
-  width: 300px;
+.MuiCard-root {
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.MuiCard-root img {
+  width: 250px;
+  height: 200px;
+  object-position: top;
+  object-fit: cover;
+}
+.MuiCard-root .info-controls {
+  width: 350px;
+  padding: 0 1rem;
+}
+.MuiCard-root .progress {
+  margin: 0.5rem 0;
 }

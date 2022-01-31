@@ -11,6 +11,7 @@ const AppProvider = ({ children }) => {
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
   const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
+  const [song, setSong] = useState([]);
 
   const componentDidMount = useCallback(async () => {
     try {
@@ -46,6 +47,8 @@ const AppProvider = ({ children }) => {
         setErrorMsg,
         spotifyAuthenticated,
         setSpotifyAuthenticated,
+        song,
+        setSong,
       }}
     >
       {children}

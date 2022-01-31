@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
 
 import CreateRoomPage from "./CreateRoomPage";
+import MusicPlayer from "./MusicPlayer";
 
 const Room = () => {
   let navigate = useNavigate();
@@ -16,6 +17,8 @@ const Room = () => {
     setVotesToSkip,
     spotifyAuthenticated,
     setSpotifyAuthenticated,
+    song,
+    setSong,
   } = useGlobalContext();
 
   const [isHost, setisHost] = useState(false);
@@ -56,13 +59,32 @@ const Room = () => {
       });
   };
 
-  const handleLeave = (e) => {
+  const handleLeave = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
     fetch("/api/leave-room", requestOptions).then((response) => navigate("/"));
   };
+
+  const getCurrentSong = () => {
+    fetch("/spotify/current-song")
+      .then((response) => {
+        if (!response.ok) {
+          return {};
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        setSong(data);
+      });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(getCurrentSong, 1000);
+    return () => clearInterval(interval);
+  });
 
   const renderSettings = () => {
     return (
@@ -103,7 +125,6 @@ const Room = () => {
   if (showSetting) {
     return renderSettings();
   } else {
-    console.log(isHost);
     return (
       <Grid container spacing={1}>
         <Grid item xs={12} align="center">
@@ -111,21 +132,7 @@ const Room = () => {
             Code: {roomCode}
           </Typography>
         </Grid>
-        <Grid item xs={12} align="center">
-          <Typography variant="h6" component="h6">
-            Votes: {votesToSkip}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Typography variant="h6" component="h6">
-            Guest Can Pause: {guestCanPause.toString()}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Typography variant="h6" component="h6">
-            Host: {isHost.toString()}
-          </Typography>
-        </Grid>
+        <MusicPlayer />
         {isHost ? renderSettingsButton() : null}
         <Grid item xs={12} align="center">
           <Button variant="contained" color="secondary" onClick={handleLeave}>

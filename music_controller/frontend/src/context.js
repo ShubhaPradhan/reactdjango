@@ -10,6 +10,7 @@ const AppProvider = ({ children }) => {
   const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
+  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
 
   const componentDidMount = useCallback(async () => {
     try {
@@ -43,6 +44,8 @@ const AppProvider = ({ children }) => {
         setSuccessMsg,
         errorMsg,
         setErrorMsg,
+        spotifyAuthenticated,
+        setSpotifyAuthenticated,
       }}
     >
       {children}

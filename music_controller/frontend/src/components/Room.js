@@ -14,6 +14,8 @@ const Room = () => {
     votesToSkip,
     setGuestCanPause,
     setVotesToSkip,
+    spotifyAuthenticated,
+    setSpotifyAuthenticated,
   } = useGlobalContext();
 
   const [isHost, setisHost] = useState(false);
@@ -34,9 +36,25 @@ const Room = () => {
             setGuestCanPause(data.guest_can_pause),
             setisHost(data.is_host);
         });
+      if (isHost) {
+        authenticateSpotify();
+      }
     };
     getRoomDetails();
-  }, []);
+  }, [isHost]);
+
+  const authenticateSpotify = () => {
+    fetch("/spotify/is-authenticated")
+      .then((response) => response.json())
+      .then((data) => {
+        setSpotifyAuthenticated(data.status);
+        if (!data.status) {
+          fetch("/spotify/get-auth-url")
+            .then((response) => response.json())
+            .then((data) => window.location.replace(data.url));
+        }
+      });
+  };
 
   const handleLeave = (e) => {
     const requestOptions = {
@@ -69,7 +87,6 @@ const Room = () => {
       </Grid>
     );
   };
-
   const renderSettingsButton = () => {
     return (
       <Grid item xs={12} align="center">
@@ -86,6 +103,7 @@ const Room = () => {
   if (showSetting) {
     return renderSettings();
   } else {
+    console.log(isHost);
     return (
       <Grid container spacing={1}>
         <Grid item xs={12} align="center">

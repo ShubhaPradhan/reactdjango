@@ -17,6 +17,30 @@ const MusicPlayer = () => {
     song;
 
   let songProgress = (song.time / song.duration) * 100;
+
+  const pauseSong = () => {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch("/spotify/pause", requestOptions);
+  };
+
+  const playSong = () => {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch("/spotify/play", requestOptions);
+  };
+
+  const skipSong = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch("/spotify/skip", requestOptions);
+  };
   return (
     <Card>
       <Grid container alignItems="center">
@@ -36,10 +60,14 @@ const MusicPlayer = () => {
             className="progress"
           />
           <div>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                is_playing ? pauseSong() : playSong();
+              }}
+            >
               {is_playing ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
-            <IconButton>
+            <IconButton onClick={skipSong}>
               <SkipNextIcon />
             </IconButton>
           </div>

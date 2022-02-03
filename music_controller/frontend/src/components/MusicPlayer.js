@@ -13,12 +13,22 @@ import { useGlobalContext } from "../context";
 
 const MusicPlayer = () => {
   const { song } = useGlobalContext();
-  const { title, artist, duration, time, image_url, is_playing, id, votes } =
-    song;
+  const {
+    title,
+    artist,
+    duration,
+    time,
+    image_url,
+    is_playing,
+    id,
+    votes,
+    votes_required,
+  } = song;
 
   let songProgress = (song.time / song.duration) * 100;
 
   const pauseSong = () => {
+    console.log("shubha");
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -69,6 +79,7 @@ const MusicPlayer = () => {
             </IconButton>
             <IconButton onClick={skipSong}>
               <SkipNextIcon />
+              {votes} / {votes_required}
             </IconButton>
           </div>
         </Grid>

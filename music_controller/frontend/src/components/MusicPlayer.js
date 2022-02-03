@@ -24,11 +24,9 @@ const MusicPlayer = () => {
     votes,
     votes_required,
   } = song;
-
-  let songProgress = (song.time / song.duration) * 100;
+  let songProgress = (time / duration) * 100;
 
   const pauseSong = () => {
-    console.log("shubha");
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -54,7 +52,7 @@ const MusicPlayer = () => {
   return (
     <Card>
       <Grid container alignItems="center">
-        <Grid item align="center">
+        <Grid item align="center" className="img-container">
           <img src={image_url} alt={title} />
         </Grid>
         <Grid item align="center" className="info-controls">
@@ -79,7 +77,9 @@ const MusicPlayer = () => {
             </IconButton>
             <IconButton onClick={skipSong}>
               <SkipNextIcon />
-              {votes} / {votes_required}
+              <p className="votes">
+                {votes} / {votes_required}
+              </p>
             </IconButton>
           </div>
         </Grid>

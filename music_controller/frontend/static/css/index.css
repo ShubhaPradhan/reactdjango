@@ -3,6 +3,12 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background: rgb(238, 174, 202);
+  background: linear-gradient(
+    180deg,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
   /* color: white; */
 }
 
@@ -44,4 +50,27 @@ body {
 }
 .MuiCard-root .progress {
   margin: 0.5rem 0;
+}
+.MuiCollapse-root {
+  width: 300px;
+}
+.votes {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+@media only screen and (max-width: 768px) {
+  .MuiCard-root {
+    margin: 0 auto;
+  }
+  .img-container {
+    width: 100%;
+    padding: 1rem 0;
+  }
+  .MuiCard-root img {
+    width: 250px;
+  }
+  .MuiCard-root .info-controls {
+    width: 100%;
+    padding: 0 1rem;
+  }
 }
